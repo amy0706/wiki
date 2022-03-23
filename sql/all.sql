@@ -6,4 +6,10 @@ create table `test`(
     primary key (id)
 ) engine=innodb default charset=utf8mb4 comment='测试';
 
-insert into `test` values ('1','12','123')
+insert into `test` values ('1','12','123');
+
+create table `demo`(
+                       `id` int not null comment 'id',
+                       `name` varchar(50) comment '名称',
+                       primary key (id)
+) engine=innodb default charset=utf8mb4 comment='测试';

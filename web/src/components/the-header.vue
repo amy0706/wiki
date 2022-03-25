@@ -12,7 +12,6 @@
       <a-menu-item key="3">nav 3</a-menu-item>
     </a-menu>
   </a-layout-header>
-
 </template>
 
 <script lang="ts">

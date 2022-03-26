@@ -2,8 +2,6 @@
   <a-layout>
     <a-layout-sider width="200" style="background: #fff">
       <a-menu
-          v-model:selectedKeys="selectedKeys2"
-          v-model:openKeys="openKeys"
           mode="inline"
           :style="{ height: '100%', borderRight: 0 }"
       >
@@ -55,12 +53,15 @@
 
 <script lang="ts">
 import {defineComponent} from 'vue';
-import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
+import axios from 'axios';
 
 export default defineComponent({
   name: 'HomeView',
-  components: {
-    HelloWorld,
-  },
+  setup() {
+    console.log("setup");
+    axios.get("http://localhost:8080/ebook/list?name=O").then((response) => {
+      console.log(response);
+    })
+  }
 });
 </script>

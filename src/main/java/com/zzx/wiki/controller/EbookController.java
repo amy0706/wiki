@@ -3,6 +3,7 @@ package com.zzx.wiki.controller;
 import com.zzx.wiki.req.EbookReq;
 import com.zzx.wiki.resp.CommonResp;
 import com.zzx.wiki.resp.EbookResp;
+import com.zzx.wiki.resp.PageResp;
 import com.zzx.wiki.service.EbookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +21,8 @@ public class EbookController {
 
     @RequestMapping("/list")
     public CommonResp list(EbookReq req) {
-        CommonResp<List<EbookResp>> resp = new CommonResp<>();
-        List<EbookResp> list = ebookService.list(req);
+        CommonResp<PageResp<EbookResp>> resp = new CommonResp<>();
+        PageResp<EbookResp> list = ebookService.list(req);
         resp.setContent(list);
         return resp;
     }

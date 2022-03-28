@@ -74,6 +74,7 @@
 <script lang="ts">
 import {defineComponent, onMounted, reactive, ref, toRef} from 'vue';
 import axios from 'axios';
+import {message} from "ant-design-vue";
 
 export default defineComponent({
   name: 'HomeView',
@@ -102,7 +103,11 @@ export default defineComponent({
         }
       }).then((response) => {
         const data = response.data;
-        ebooks.value = data.content.list;
+        if (data.success) {
+          ebooks.value = data.content.list;
+        } else {
+          message.error(data.message);
+        }
         // ebooks1.books = data.content.list;
       });
     })

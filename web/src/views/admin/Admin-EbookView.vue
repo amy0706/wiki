@@ -132,15 +132,16 @@ export default defineComponent({
           size: params.size
         }
       }).then((response) => {
-        console.log('params:', params)
         loading.value = false;
         const data = response.data;
-        ebooks.value = data.content.list;
-
-        //重置分页按钮
-        pagination.value.current = params.page;
-        pagination.value.total = data.content.total;
-
+        if (data.success) {
+          ebooks.value = data.content.list;
+          //重置分页按钮
+          pagination.value.current = params.page;
+          pagination.value.total = data.content.total;
+        } else {
+          message.error(data.message);
+        }
       });
     };
 
@@ -231,7 +232,7 @@ export default defineComponent({
       ebook,
       modalVisible,
       modalLoading,
-      handleModalOk
+      handleModalOk,
     }
   }
 });

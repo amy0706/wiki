@@ -5,8 +5,9 @@ import com.github.pagehelper.PageInfo;
 import com.zzx.wiki.domain.Ebook;
 import com.zzx.wiki.domain.EbookExample;
 import com.zzx.wiki.mapper.EbookMapper;
-import com.zzx.wiki.req.EbookReq;
-import com.zzx.wiki.resp.EbookResp;
+import com.zzx.wiki.req.EbookQueryReq;
+import com.zzx.wiki.req.EbookSaveReq;
+import com.zzx.wiki.resp.EbookQueryResp;
 import com.zzx.wiki.resp.PageResp;
 import com.zzx.wiki.util.CopyUtil;
 import org.slf4j.Logger;
@@ -25,7 +26,10 @@ public class EbookService {
     @Autowired
     private EbookMapper ebookMapper;
 
-    public PageResp<EbookResp> list(EbookReq req) {
+    /**
+     * 查询
+     */
+    public PageResp<EbookQueryResp> list(EbookQueryReq req) {
         EbookExample ebookExample = new EbookExample();
         EbookExample.Criteria criteria = ebookExample.createCriteria();
         if (!ObjectUtils.isEmpty(req.getName())) {
@@ -50,11 +54,25 @@ public class EbookService {
 //        }
 
         //列表复制
-        List<EbookResp> respList = CopyUtil.copyList(ebookList, EbookResp.class);
-        PageResp<EbookResp> pageResp = new PageResp();
+        List<EbookQueryResp> respList = CopyUtil.copyList(ebookList, EbookQueryResp.class);
+        PageResp<EbookQueryResp> pageResp = new PageResp();
         pageResp.setTotal(pageInfo.getTotal());
         pageResp.setList(respList);
 
         return pageResp;
+    }
+
+    /**
+     * 保存
+     */
+    public void save(EbookSaveReq req) {
+        Ebook ebook = CopyUtil.copy(req, Ebook.class);
+        if (ObjectUtils.isEmpty(req.getId())) {
+            //新增
+            ebookMapper.insert(ebook);
+        } else {
+            //编辑
+            ebookMapper.updateByPrimaryKey(ebook);
+        }
     }
 }

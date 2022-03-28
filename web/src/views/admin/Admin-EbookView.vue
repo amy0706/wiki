@@ -92,7 +92,7 @@ export default defineComponent({
       axios.get("/ebook/list", {
         params: {
           page: params.page,
-          size: params.size,
+          size: params.size
         }
       }).then((response) => {
         console.log('params:', params)

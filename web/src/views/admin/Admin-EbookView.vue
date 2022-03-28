@@ -55,6 +55,7 @@
 
 <script lang="ts">
 import {defineComponent, onMounted, ref} from "vue";
+import { message } from 'ant-design-vue';
 import axios from 'axios';
 
 export default defineComponent({
@@ -162,6 +163,7 @@ export default defineComponent({
           size: pagination.value.pageSize
         });
       });
+        message.info('编辑成功',2);
     };
 
     /**
@@ -189,7 +191,7 @@ export default defineComponent({
       modalVisible,
       modalLoading,
       handleModalOk,
-      ebook
+      ebook,
     }
   }
 });

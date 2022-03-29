@@ -33,8 +33,45 @@ public class CategoryService {
     /**
      * 查询
      */
+    public List<CategoryQueryResp> all() {
+        CategoryExample categoryExample = new CategoryExample();
+        categoryExample.setOrderByClause("sort asc");
+        List<Category> categoryList = categoryMapper.selectByExample(categoryExample);
+
+        PageInfo<Category> pageInfo = new PageInfo<>(categoryList);
+        LOG.info("总行数：{}", pageInfo.getTotal());
+        LOG.info("总页数：{}", pageInfo.getPages());
+
+        //列表复制
+        List<CategoryQueryResp> respList = CopyUtil.copyList(categoryList, CategoryQueryResp.class);
+        return respList;
+    }
+
+    /**
+     * 保存
+     */
+    public void save(CategorySaveReq req) {
+        Category category = CopyUtil.copy(req, Category.class);
+        if (ObjectUtils.isEmpty(req.getId())) {
+            //新增
+            category.setId(snowFlake.nextId());
+            categoryMapper.insert(category);
+        } else {
+            //编辑
+            categoryMapper.updateByPrimaryKey(category);
+        }
+    }
+
+    /**
+     * 删除
+     */
+    public void delete(Long id) {
+        categoryMapper.deleteByPrimaryKey(id);
+    }
+
     public PageResp<CategoryQueryResp> list(CategoryQueryReq req) {
         CategoryExample categoryExample = new CategoryExample();
+        categoryExample.setOrderByClause("sort asc");
         CategoryExample.Criteria criteria = categoryExample.createCriteria();
         if (!ObjectUtils.isEmpty(req.getName())) {
             criteria.andNameLike("%" + req.getName() + "%");
@@ -64,27 +101,5 @@ public class CategoryService {
         pageResp.setList(respList);
 
         return pageResp;
-    }
-
-    /**
-     * 保存
-     */
-    public void save(CategorySaveReq req) {
-        Category category = CopyUtil.copy(req, Category.class);
-        if (ObjectUtils.isEmpty(req.getId())) {
-            //新增
-            category.setId(snowFlake.nextId());
-            categoryMapper.insert(category);
-        } else {
-            //编辑
-            categoryMapper.updateByPrimaryKey(category);
-        }
-    }
-
-    /**
-     * 删除
-     */
-    public void delete(Long id){
-        categoryMapper.deleteByPrimaryKey(id);
     }
 }

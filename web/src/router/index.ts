@@ -2,6 +2,7 @@ import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import AdminEbookView from '../views/admin/Admin-EbookView.vue'
 import AdminCategoryView from "@/views/admin/Admin-CategoryView.vue";
+import AdminDocView from "@/views/admin/Admin-DocView.vue";
 
 
 const routes: Array<RouteRecordRaw> = [
@@ -19,14 +20,19 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
     },
     {
-        path:'/admin/ebook',
-        name:'adminEbook',
-        component:AdminEbookView
+        path: '/admin/ebook',
+        name: 'adminEbook',
+        component: AdminEbookView
     },
     {
-        path:'/admin/category',
-        name:'adminCategory',
-        component:AdminCategoryView
+        path: '/admin/category',
+        name: 'adminCategory',
+        component: AdminCategoryView
+    },
+    {
+        path: '/admin/doc',
+        name: 'adminDoc',
+        component: AdminDocView
     }
 ]
 

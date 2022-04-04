@@ -73,10 +73,6 @@ public class CategoryService {
         CategoryExample categoryExample = new CategoryExample();
         categoryExample.setOrderByClause("sort asc");
         CategoryExample.Criteria criteria = categoryExample.createCriteria();
-        if (!ObjectUtils.isEmpty(req.getName())) {
-            criteria.andNameLike("%" + req.getName() + "%");
-
-        }
         PageHelper.startPage(req.getPage(), req.getSize());
         List<Category> categoryList = categoryMapper.selectByExample(categoryExample);
 

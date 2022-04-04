@@ -39,10 +39,11 @@ public class DocService {
     /**
      * 查询
      */
-    public List<DocQueryResp> all() {
+    public List<DocQueryResp> all(Long ebookId) {
         DocExample docExample = new DocExample();
-        docExample.setOrderByClause("sort asc");
+        docExample.createCriteria().andEbookIdEqualTo(ebookId);
         List<Doc> docList = docMapper.selectByExample(docExample);
+        docExample.setOrderByClause("sort asc");
 
         PageInfo<Doc> pageInfo = new PageInfo<>(docList);
         LOG.info("总行数：{}", pageInfo.getTotal());

@@ -152,7 +152,7 @@ export default defineComponent({
      */
     const handleQuery = () => {
       loading.value = true;
-      axios.get("/doc/all").then((response) => {
+      axios.get("/doc/all/" + route.query.ebookId).then((response) => {
         loading.value = false;
         const data = response.data;
         if (data.success) {
@@ -291,7 +291,7 @@ export default defineComponent({
       treeSelectData.value = Tool.copy(level1.value);
       setDisable(treeSelectData.value, record.id);
 
-      // 为选择树添加一个“无”字
+      // 为选择树添加“一级节点”
       treeSelectData.value.unshift({id: 0, name: '一级节点'});
     };
 

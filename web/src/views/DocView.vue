@@ -1,6 +1,7 @@
 <template>
   <a-layout>
     <a-layout-content :style="{background:'#fff',padding:'24px',margin:0,minHeight:'200px'}">
+      <h3 v-if="level1.length === 0">对不起，找不到相关文档！</h3>
       <a-row>
         <a-col :span="6">
           <a-tree
@@ -125,7 +126,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 /* table 样式 */
 .wangeditor table {
   border-top: 1px solid #ccc;
@@ -177,7 +178,7 @@ export default defineComponent({
 
 /* 和antdv p冲突，覆盖掉 */
 .wangeditor blockquote p {
-  font-family: "YouYuan",serif;
+  font-family: "YouYuan", serif;
   margin: 20px 10px !important;
   font-size: 16px !important;
   font-weight: 600;

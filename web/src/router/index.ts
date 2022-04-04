@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import AdminEbookView from '../views/admin/Admin-EbookView.vue'
 import AdminCategoryView from "@/views/admin/Admin-CategoryView.vue";
 import AdminDocView from "@/views/admin/Admin-DocView.vue";
+import DocView from "@/views/DocView.vue";
 
 
 const routes: Array<RouteRecordRaw> = [
@@ -33,6 +34,11 @@ const routes: Array<RouteRecordRaw> = [
         path: '/admin/doc',
         name: 'adminDoc',
         component: AdminDocView
+    },
+    {
+        path: '/doc',
+        name: 'doc',
+        component: DocView
     }
 ]
 

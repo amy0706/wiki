@@ -57,7 +57,7 @@
       <a-form-item label="名称">
         <a-input v-model:value="doc.name"/>
       </a-form-item>
-      <a-form-item label="名称">
+      <a-form-item label="父文档">
         <a-tree-select
             v-model:value="doc.parent"
             style="width: 100%"
@@ -68,18 +68,6 @@
             :replaceFields="{title:'name',key:'id',value:'id'}"
         >
         </a-tree-select>
-      </a-form-item>
-      <a-form-item label="父文档">
-        <a-select v-model:value="doc.parent"
-                  ref="select"
-        >
-          <a-select-option value="0">
-            无
-          </a-select-option>
-          <a-select-option v-for="c in level1" :key="c.id" :value="c.id" :disabled="doc.id === c.id">
-            {{ c.name }}
-          </a-select-option>
-        </a-select>
       </a-form-item>
       <a-form-item label="顺序">
         <a-input v-model:value="doc.sort"/>
@@ -93,10 +81,19 @@ import {defineComponent, onMounted, ref} from "vue";
 import {message} from 'ant-design-vue';
 import axios from 'axios';
 import {Tool} from "@/util/tool";
+import {useRoute} from "vue-router";
 
 export default defineComponent({
   name: 'AdminDoc',
   setup() {
+    const route = useRoute();
+    console.log("路由：", route);
+    console.log("route.path：", route.path);
+    console.log("route.query：", route.query);
+    console.log("route.params：", route.params);
+    console.log("route.fullPath：", route.fullPath);
+    console.log("route.name：", route.name);
+    console.log("route.meta：", route.meta);
     const docs = ref();
     const loading = ref(false);
 
@@ -232,7 +229,9 @@ export default defineComponent({
      */
     const add = () => {
       modalVisible.value = true;
-      doc.value = {};
+      doc.value = {
+        ebookId: route.query.ebookId
+      };
 
       treeSelectData.value = Tool.copy(level1.value);
 

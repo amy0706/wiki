@@ -174,7 +174,8 @@ export default defineComponent({
      */
     const treeSelectData = ref();
     treeSelectData.value = [];
-    const doc = ref({});
+    const doc = ref();
+    doc.value = {};
     const modalVisible = ref<boolean>(false);
     const modalLoading = ref<boolean>(false);
     const editor = new E('#content');
@@ -182,6 +183,7 @@ export default defineComponent({
 
     const handleSave = () => {
       modalLoading.value = true;
+      doc.value.content = editor.txt.html();
       axios.post("/doc/save", doc.value).then((response) => {
         modalLoading.value = false;
         const data = response.data; // data = CommonResp

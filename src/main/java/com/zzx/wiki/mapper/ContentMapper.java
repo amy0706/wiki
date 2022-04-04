@@ -2,7 +2,9 @@ package com.zzx.wiki.mapper;
 
 import com.zzx.wiki.domain.Content;
 import com.zzx.wiki.domain.ContentExample;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface ContentMapper {
@@ -31,4 +33,5 @@ public interface ContentMapper {
     int updateByPrimaryKeySelective(Content record);
 
     int updateByPrimaryKeyWithBLOBs(Content record);
+
 }

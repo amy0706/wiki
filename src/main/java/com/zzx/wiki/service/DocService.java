@@ -2,8 +2,11 @@ package com.zzx.wiki.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.zzx.wiki.domain.Content;
+import com.zzx.wiki.domain.ContentExample;
 import com.zzx.wiki.domain.Doc;
 import com.zzx.wiki.domain.DocExample;
+import com.zzx.wiki.mapper.ContentMapper;
 import com.zzx.wiki.mapper.DocMapper;
 import com.zzx.wiki.req.DocQueryReq;
 import com.zzx.wiki.req.DocSaveReq;
@@ -26,6 +29,9 @@ public class DocService {
 
     @Autowired
     private DocMapper docMapper;
+
+    @Autowired
+    private ContentMapper contentMapper;
 
     @Autowired
     private SnowFlake snowFlake;
@@ -51,14 +57,22 @@ public class DocService {
      * 保存
      */
     public void save(DocSaveReq req) {
+        ContentExample contentExample = new ContentExample();
         Doc doc = CopyUtil.copy(req, Doc.class);
+        Content content = CopyUtil.copy(req, Content.class);
         if (ObjectUtils.isEmpty(req.getId())) {
             //新增
             doc.setId(snowFlake.nextId());
             docMapper.insert(doc);
+            content.setId(doc.getId());
+            contentMapper.insert(content);
         } else {
             //编辑
             docMapper.updateByPrimaryKey(doc);
+            int count = contentMapper.updateByExampleWithBLOBs(content, contentExample);
+            if (count == 0) {
+                contentMapper.insert(content);
+            }
         }
     }
 

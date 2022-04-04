@@ -13,6 +13,7 @@
           </a-tree>
         </a-col>
         <a-col :span="18">
+          <div :innerHTML="html"></div>
         </a-col>
       </a-row>
     </a-layout-content>
@@ -41,6 +42,9 @@ export default defineComponent({
     const html = ref();
     const defaultSelectedKeys = ref();
     defaultSelectedKeys.value = [];
+    // 当前选中的文档
+    const doc = ref();
+    doc.value = {};
 
     /**
      * 一级文档树，children属性就是二级文档
@@ -69,7 +73,12 @@ export default defineComponent({
           level1.value = [];
           level1.value = Tool.array2Tree(docs.value, 0);
           console.log("树形结构:", level1);
-          //重置分页按钮
+          if (Tool.isNotEmpty(level1)) {
+            defaultSelectedKeys.value = [level1.value[0].id];
+            handleQueryContent(level1.value[0].id);
+            // 初始显示文档信息
+            doc.value = level1.value[0];
+          }
         } else {
           message.error(data.message);
         }
@@ -109,7 +118,8 @@ export default defineComponent({
       level1,
       html,
       onSelect,
-      defaultSelectedKeys
+      defaultSelectedKeys,
+      doc
     }
   }
 });

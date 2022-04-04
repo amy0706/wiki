@@ -120,4 +120,8 @@ public class DocService {
         return pageResp;
     }
 
+    public String findContent(Long id) {
+        Content content = contentMapper.selectByPrimaryKey(id);
+        return content.getContent();
+    }
 }

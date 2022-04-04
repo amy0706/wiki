@@ -20,12 +20,14 @@
       <a-row :gutter="24">
         <a-col :span="8">
           <a-table
+              v-if="level1.length>0"
               :columns="columns"
               :row-key="record => record.id"
               :data-source="level1"
               :loading="loading"
               :pagination="false"
               size="small"
+              :defaultExpandAllRows="true"
           >
             <template #name="{text,record}">
               {{ record.sort }}{{ text }}
@@ -143,6 +145,7 @@ export default defineComponent({
      * }]
      */
     const level1 = ref();
+    level1.value = [];
 
     /**
      * 查询所有文档

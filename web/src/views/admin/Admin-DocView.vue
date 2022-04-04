@@ -170,7 +170,6 @@ export default defineComponent({
           treeSelectData.value = Tool.copy(level1.value);
           // 为选择树添加默认的“一级节点”
           treeSelectData.value.unshift({id: 0, name: "一级节点"});
-
         } else {
           message.error(data.message);
         }
@@ -181,7 +180,7 @@ export default defineComponent({
      * 表单
      */
     const doc = ref();
-    doc.value = {};
+    doc.value = {ebookId: route.query.ebookId};
     const modalVisible = ref<boolean>(false);
     const modalLoading = ref<boolean>(false);
     const editor = new E('#content');
@@ -312,8 +311,7 @@ export default defineComponent({
         ebookId: route.query.ebookId
       };
 
-      treeSelectData.value = Tool.copy(level1.value);
-
+      treeSelectData.value = Tool.copy(level1.value) || [];
       // 为选择树添加一个“无”字
       treeSelectData.value.unshift({id: 0, name: '一级节点'});
     };
@@ -338,7 +336,6 @@ export default defineComponent({
     });
 
     return {
-      // docs,
       level1,
       columns,
       loading,

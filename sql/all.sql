@@ -5,7 +5,8 @@ create table `test`
     `name`     varchar(50) comment '名称',
     `password` varchar(50) comment '密码',
     primary key (id)
-) engine=innodb default charset=utf8mb4 comment='测试';
+) engine = innodb
+  default charset = utf8mb4 comment ='测试';
 
 insert into `test`
 values ('1', '12', '123');
@@ -15,7 +16,8 @@ create table `demo`
     `id`   int not null comment 'id',
     `name` varchar(50) comment '名称',
     primary key (id)
-) engine=innodb default charset=utf8mb4 comment='测试';
+) engine = innodb
+  default charset = utf8mb4 comment ='测试';
 
 create table `ebook`
 (
@@ -29,7 +31,8 @@ create table `ebook`
     `view_count`   int comment '阅读数',
     `vote_count`   int comment '点赞数',
     primary key (`id`)
-)engine=innodb default charset=utf8mb4 comment='电子书';
+) engine = innodb
+  default charset = utf8mb4 comment ='电子书';
 
 insert into `ebook` (id, name, description)
 values (1, 'Spring Boot入门教程', '零基础入门Java开发，企业级应用开发最佳首选框架');
@@ -51,7 +54,8 @@ create table `category`
     `name`   varchar(50) not null comment '名称',
     `sort`   int comment '顺序',
     primary key (`id`)
-)engine=innodb default charset=utf8mb4 comment='分类';
+) engine = innodb
+  default charset = utf8mb4 comment ='分类';
 
 insert into `category` (id, parent, name, sort)
 values (100, 000, '前端开发', 100);
@@ -98,7 +102,8 @@ create table `doc`
     `view_count` int                  default 0 comment '阅读数',
     `vote_count` int                  default 0 comment '点赞数',
     primary key (`id`)
-)engine=innodb default charset=utf8mb4 comment='文档';
+) engine = innodb
+  default charset = utf8mb4 comment ='文档';
 
 insert into `doc` (id, ebook_id, parent, name, sort, view_count, vote_count)
 values (1, 1, 0, '文档1', 1, 0, 0);
@@ -120,7 +125,8 @@ create table `content`
     `id`      bigint     not null comment '文档id',
     `content` mediumtext not null comment '内容',
     primary key (`id`)
-)engine=innodb default charset=utf8mb4 comment='文档内容';
+) engine = innodb
+  default charset = utf8mb4 comment ='文档内容';
 
 -- 用户表
 drop table if exists `user`;
@@ -132,4 +138,8 @@ create table `user`
     `password`   char(32)    not null comment '密码',
     primary key (`id`),
     unique key `login_name_unique` (`login_name`)
-)engine=innodb default charset=utf8mb4 comment='用户';
+) engine = innodb
+  default charset = utf8mb4 comment ='用户';
+
+insert into `user`(id, login_name, name, password)
+values (1, 'test', '测试', 'test');

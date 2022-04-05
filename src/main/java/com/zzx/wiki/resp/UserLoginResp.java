@@ -1,23 +1,15 @@
-package com.zzx.wiki.req;
-
-import org.hibernate.validator.constraints.Length;
+package com.zzx.wiki.resp;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-public class UserSaveReq {
+public class UserLoginResp {
     private Long id;
 
-    @NotNull(message = "用户名不能为空")
     private String loginName;
 
-    @NotNull(message = "昵称不能为空")
     private String name;
 
-    @NotNull(message = "密码不能为空")
-//    @Length(min = 6, max = 20, message = "【密码】6~20位")
-    @Pattern(regexp = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,32}$", message = "【密码】至少包含数字和英文，长度6-32")
-    private String password;
 
     public Long getId() {
         return id;
@@ -43,13 +35,6 @@ public class UserSaveReq {
         this.name = name;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     @Override
     public String toString() {
@@ -60,7 +45,6 @@ public class UserSaveReq {
         sb.append(", id=").append(id);
         sb.append(", loginName=").append(loginName);
         sb.append(", name=").append(name);
-        sb.append(", password=").append(password);
         sb.append("]");
         return sb.toString();
     }

@@ -1,9 +1,11 @@
 package com.zzx.wiki.controller;
 
+import com.zzx.wiki.req.UserLoginReq;
 import com.zzx.wiki.req.UserQueryReq;
 import com.zzx.wiki.req.UserResetPasswordReq;
 import com.zzx.wiki.req.UserSaveReq;
 import com.zzx.wiki.resp.CommonResp;
+import com.zzx.wiki.resp.UserLoginResp;
 import com.zzx.wiki.resp.UserQueryResp;
 import com.zzx.wiki.resp.PageResp;
 import com.zzx.wiki.service.UserService;
@@ -52,4 +54,14 @@ public class UserController {
         userService.resetPassword(req);
         return resp;
     }
+
+    @PostMapping("/login")
+    public CommonResp login(@RequestBody @Valid UserLoginReq req) {
+        req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
+        CommonResp<UserLoginResp> resp = new CommonResp<>();
+        UserLoginResp userLoginResp = userService.login(req);
+        resp.setContent(userLoginResp);
+        return resp;
+    }
+
 }

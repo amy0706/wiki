@@ -1,14 +1,17 @@
 package com.zzx.wiki.service;
 
 import com.github.pagehelper.PageInfo;
+import com.mysql.cj.log.Log;
 import com.zzx.wiki.domain.User;
 import com.zzx.wiki.domain.UserExample;
 import com.zzx.wiki.exception.BusinessException;
 import com.zzx.wiki.exception.BusinessExceptionCode;
 import com.zzx.wiki.mapper.UserMapper;
+import com.zzx.wiki.req.UserLoginReq;
 import com.zzx.wiki.req.UserQueryReq;
 import com.zzx.wiki.req.UserResetPasswordReq;
 import com.zzx.wiki.req.UserSaveReq;
+import com.zzx.wiki.resp.UserLoginResp;
 import com.zzx.wiki.resp.UserQueryResp;
 import com.zzx.wiki.resp.PageResp;
 import com.zzx.wiki.util.CopyUtil;
@@ -112,6 +115,29 @@ public class UserService {
             return null;
         } else {
             return userList.get(0);
+        }
+    }
+
+
+    /**
+     * 登录
+     */
+    public UserLoginResp login(UserLoginReq req) {
+        User userDb = selectByLoginName(req.getLoginName());
+        if (ObjectUtils.isEmpty(userDb)) {
+            // 用户名不存在
+            LOG.info("用戶名不存在，{}", req.getLoginName());
+            throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
+        } else {
+            if (userDb.getPassword().equals(req.getPassword())) {
+                // 登录成功
+                UserLoginResp userLoginResp = CopyUtil.copy(userDb, UserLoginResp.class);
+                return userLoginResp;
+            } else {
+                // 密码错误
+                LOG.info("密碼不對，輸入密碼:{},數據庫密碼:{}", req.getPassword(), userDb.getPassword());
+                throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
+            }
         }
     }
 }

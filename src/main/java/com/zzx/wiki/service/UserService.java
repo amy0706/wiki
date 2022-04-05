@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
+
 import java.util.List;
 
 @Service
@@ -80,7 +81,8 @@ public class UserService {
             }
         } else {
             // 编辑
-            userMapper.updateByPrimaryKey(user);
+            user.setLoginName(null);
+            userMapper.updateByPrimaryKeySelective(user);
         }
     }
 

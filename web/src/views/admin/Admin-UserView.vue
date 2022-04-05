@@ -64,7 +64,7 @@
         <a-input v-model:value="user.loginName" :disabled="!!user.id"/>
       </a-form-item>
       <a-form-item label="昵称">
-        <a-input v-model:value="user.name" />
+        <a-input v-model:value="user.name"/>
       </a-form-item>
       <a-form-item label="密码" v-show="!user.id">
         <a-input v-model:value="user.password" type="password"/>
@@ -87,12 +87,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import {defineComponent, onMounted, ref} from 'vue';
 import axios from 'axios';
-import { message } from 'ant-design-vue';
+import {message} from 'ant-design-vue';
 import {Tool} from "@/util/tool";
 
-// declare let hexMd5: any;
+declare let hexMd5: any;
 declare let KEY: any;
 
 export default defineComponent({
@@ -124,7 +124,7 @@ export default defineComponent({
       {
         title: 'Action',
         key: 'action',
-        slots: { customRender: 'action' }
+        slots: {customRender: 'action'}
       }
     ];
 
@@ -174,7 +174,7 @@ export default defineComponent({
     const handleModalOk = () => {
       modalLoading.value = true;
 
-      // user.value.password = hexMd5(user.value.password + KEY);
+      user.value.password = hexMd5(user.value.password + KEY);
 
       axios.post("/user/save", user.value).then((response) => {
         modalLoading.value = false;
@@ -230,7 +230,7 @@ export default defineComponent({
     const handleResetModalOk = () => {
       resetModalLoading.value = true;
 
-      // user.value.password = hexMd5(user.value.password + KEY);
+      user.value.password = hexMd5(user.value.password + KEY);
 
       axios.post("/user/reset-password", user.value).then((response) => {
         resetModalLoading.value = false;

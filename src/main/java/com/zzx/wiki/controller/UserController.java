@@ -7,9 +7,11 @@ import com.zzx.wiki.resp.UserQueryResp;
 import com.zzx.wiki.resp.PageResp;
 import com.zzx.wiki.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.nio.charset.StandardCharsets;
 
 
 @RestController
@@ -29,6 +31,7 @@ public class UserController {
 
     @PostMapping("/save")
     public CommonResp save(@RequestBody @Valid UserSaveReq req) {
+        req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
         CommonResp resp = new CommonResp<>();
         userService.save(req);
         return resp;

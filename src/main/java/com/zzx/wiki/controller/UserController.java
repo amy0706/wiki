@@ -1,5 +1,6 @@
 package com.zzx.wiki.controller;
 
+import com.zzx.wiki.domain.User;
 import com.zzx.wiki.req.UserLoginReq;
 import com.zzx.wiki.req.UserQueryReq;
 import com.zzx.wiki.req.UserResetPasswordReq;
@@ -9,20 +10,33 @@ import com.zzx.wiki.resp.UserLoginResp;
 import com.zzx.wiki.resp.UserQueryResp;
 import com.zzx.wiki.resp.PageResp;
 import com.zzx.wiki.service.UserService;
+import com.zzx.wiki.util.SnowFlake;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.nio.charset.StandardCharsets;
+import java.util.concurrent.TimeUnit;
 
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
+    private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
+
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private SnowFlake snowFlake;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+
 
     @GetMapping("/list")
     public CommonResp list(@Valid UserQueryReq req) {
@@ -60,6 +74,12 @@ public class UserController {
         req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
         CommonResp<UserLoginResp> resp = new CommonResp<>();
         UserLoginResp userLoginResp = userService.login(req);
+
+        Long token = snowFlake.nextId();
+        LOG.info("生成单点登录token:{}，并放入redis中",token);
+        userLoginResp.setToken(token.toString());
+        redisTemplate.opsForValue().set(token, userLoginResp, 3600 * 24, TimeUnit.SECONDS);
+
         resp.setContent(userLoginResp);
         return resp;
     }

@@ -7,6 +7,7 @@ import com.zzx.wiki.exception.BusinessException;
 import com.zzx.wiki.exception.BusinessExceptionCode;
 import com.zzx.wiki.mapper.UserMapper;
 import com.zzx.wiki.req.UserQueryReq;
+import com.zzx.wiki.req.UserResetPasswordReq;
 import com.zzx.wiki.req.UserSaveReq;
 import com.zzx.wiki.resp.UserQueryResp;
 import com.zzx.wiki.resp.PageResp;
@@ -82,8 +83,17 @@ public class UserService {
         } else {
             // 编辑
             user.setLoginName(null);
+            user.setPassword(null);
             userMapper.updateByPrimaryKeySelective(user);
         }
+    }
+
+    /**
+     * 修改密码
+     */
+    public void resetPassword(UserResetPasswordReq req) {
+        User user = CopyUtil.copy(req, User.class);
+        userMapper.updateByPrimaryKeySelective(user);
     }
 
     /**

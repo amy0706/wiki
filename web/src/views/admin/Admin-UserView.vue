@@ -238,10 +238,12 @@ export default defineComponent({
         if (data.success) {
           resetModalVisible.value = false;
 
+          message.success("修改成功");
           // 重新加载列表
           handleQuery({
             page: pagination.value.current,
             size: pagination.value.pageSize,
+
           });
         } else {
           message.error(data.message);

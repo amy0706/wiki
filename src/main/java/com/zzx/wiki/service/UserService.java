@@ -1,9 +1,10 @@
 package com.zzx.wiki.service;
 
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zzx.wiki.domain.User;
 import com.zzx.wiki.domain.UserExample;
+import com.zzx.wiki.exception.BusinessException;
+import com.zzx.wiki.exception.BusinessExceptionCode;
 import com.zzx.wiki.mapper.UserMapper;
 import com.zzx.wiki.req.UserQueryReq;
 import com.zzx.wiki.req.UserSaveReq;
@@ -15,8 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
-
 import java.util.List;
 
 @Service
@@ -40,7 +41,6 @@ public class UserService {
             criteria.andNameLike("%" + req.getLoginName() + "%");
         }
         List<User> userList = userMapper.selectByExample(userExample);
-        System.out.println(userList);
 
         PageInfo<User> pageInfo = new PageInfo<>(userList);
         LOG.info("总行数：{}", pageInfo.getTotal());
@@ -70,11 +70,16 @@ public class UserService {
     public void save(UserSaveReq req) {
         User user = CopyUtil.copy(req, User.class);
         if (ObjectUtils.isEmpty(req.getId())) {
-            //新增
-            user.setId(snowFlake.nextId());
-            userMapper.insert(user);
+            if (ObjectUtils.isEmpty(selectByLoginName(req.getLoginName()))) {
+                // 新增
+                user.setId(snowFlake.nextId());
+                userMapper.insert(user);
+            } else {
+                // 用户名已存在
+                throw new BusinessException(BusinessExceptionCode.USER_LOGIN_NAME_EXIST);
+            }
         } else {
-            //编辑
+            // 编辑
             userMapper.updateByPrimaryKey(user);
         }
     }
@@ -84,5 +89,17 @@ public class UserService {
      */
     public void delete(Long id) {
         userMapper.deleteByPrimaryKey(id);
+    }
+
+    public User selectByLoginName(String loginName) {
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andLoginNameEqualTo(loginName);
+        List<User> userList = userMapper.selectByExample(userExample);
+        if (CollectionUtils.isEmpty(userList)) {
+            return null;
+        } else {
+            return userList.get(0);
+        }
     }
 }
